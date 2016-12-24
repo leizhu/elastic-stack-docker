@@ -1,0 +1,59 @@
+cluster:
+  name: ${CLUSTER_NAME}
+
+node:
+  name: ${HOSTNAME}
+  master: ${NODE_MASTER}
+  data: ${NODE_DATA}
+  ingest: ${NODE_INGEST}
+
+node.max_local_storage_nodes: 1
+
+network.host: ${NETWORK_HOST}
+
+
+http:
+  enabled: ${HTTP_ENABLE}
+  compression: true
+  cors:
+    enabled: true
+    allow-origin: "*"
+
+cloud:
+  kubernetes:
+    service: ${DISCOVERY_SERVICE}
+    namespace: ${NAMESPACE}
+discovery:
+    type: kubernetes
+    zen.fd.ping_timeout: 1m
+    zen.fd.ping_retries: 5
+    zen.minimum_master_nodes: ${MINIMUM_MASTER_NODES}
+
+bootstrap:
+    memory_lock: true
+
+path.repo: ["/backups"]
+
+# Index pool
+#thread_pool:
+#    index:
+#        size: 30
+#        queue_size: 1000
+
+# Indices settings
+indices:
+    memory:
+        index_buffer_size: 30%
+        min_index_buffer_size: 96mb
+
+# Indexing Settings for Writes
+#index.refresh_interval: 30s
+#index.merge.policy.use_compound_file: false
+#index.merge.scheduler.max_thread_count: 1
+#index.translog.flush_threshold_size: 1024mb
+#index.translog.interval: 10s
+
+# restart settings
+gateway.recover_after_time: 5m
+
+cluster.routing.allocation.same_shard.host: true
