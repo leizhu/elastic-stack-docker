@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 
 MAINTAINER Lei Zhu <lei.zhu.1017@gmail.com>
 
-ENV FILEBEAT_VERSION 5.0.1
+ENV FILEBEAT_VERSION 5.2.2
 
 COPY sources.list /etc/apt/sources.list
 

@@ -23,37 +23,32 @@ cloud:
   kubernetes:
     service: ${DISCOVERY_SERVICE}
     namespace: ${NAMESPACE}
+
 discovery:
     type: kubernetes
-    zen.fd.ping_timeout: 1m
-    zen.fd.ping_retries: 5
+    zen.hosts_provider: kubernetes
+    zen.fd.ping_interval: 5s
+    zen.fd.ping_timeout: 10s
+    zen.fd.ping_retries: 3
     zen.minimum_master_nodes: ${MINIMUM_MASTER_NODES}
+    zen.master_election.ignore_non_master_pings: true
 
 bootstrap:
     memory_lock: true
 
 path.repo: ["/backups"]
 
-# Index pool
-#thread_pool:
-#    index:
-#        size: 30
-#        queue_size: 1000
-
-# Indices settings
-indices:
-    memory:
-        index_buffer_size: 30%
-        min_index_buffer_size: 96mb
-
-# Indexing Settings for Writes
-#index.refresh_interval: 30s
-#index.merge.policy.use_compound_file: false
-#index.merge.scheduler.max_thread_count: 1
-#index.translog.flush_threshold_size: 1024mb
-#index.translog.interval: 10s
+## Indices settings
+#indices:
+#    memory:
+#        index_buffer_size: 30%
+#        min_index_buffer_size: 96mb
 
 # restart settings
 gateway.recover_after_time: 5m
+gateway.recover_after_data_nodes: 2
+#gateway.recover_after_master_nodes: 3
 
 cluster.routing.allocation.same_shard.host: true
+
+indices.fielddata.cache.size: 50%

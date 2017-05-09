@@ -1,4 +1,4 @@
-FROM elasticsearch:5.0.1
+FROM elasticsearch:5.2.2
 
 MAINTAINER lei.zhu.1017@gmail.com
 
@@ -8,16 +8,16 @@ RUN echo "elasticsearch    hard    memlock        unlimited" >> /etc/security/li
 # Install Elasticsearch plug-ins
 ADD do_not_use.yml /usr/share/elasticsearch/config/elasticsearch.yml
 
-RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install io.fabric8:elasticsearch-cloud-kubernetes:5.0.1
+#COPY plugins/elasticsearch-cloud-kubernetes-5.1.1.zip /tmp/
+#RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install file:///tmp/elasticsearch-cloud-kubernetes-5.1.1.zip
+RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install io.fabric8:elasticsearch-cloud-kubernetes:5.2.2
 
-COPY plugins/elasticsearch-analysis-ik-5.0.1.zip /tmp/
+COPY plugins/elasticsearch-analysis-ik-5.2.2.zip /tmp/
 RUN mkdir /usr/share/elasticsearch/plugins/ik
-RUN unzip /tmp/elasticsearch-analysis-ik-5.0.1.zip -d /usr/share/elasticsearch/plugins/ik/
+RUN unzip /tmp/elasticsearch-analysis-ik-5.2.2.zip -d /usr/share/elasticsearch/plugins/ik/
 
-RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install -b https://github.com/vvanholl/elasticsearch-prometheus-exporter/releases/download/5.0.1.0/elasticsearch-prometheus-exporter-5.0.1.0.zip
-
-#COPY plugins/x-pack-5.0.1.zip /tmp/
-#RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install file:/tmp/x-pack-5.0.1.zip
+COPY plugins/elasticsearch-prometheus-exporter-5.2.2.0.zip /tmp/
+RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install file:///tmp/elasticsearch-prometheus-exporter-5.2.2.0.zip
 
 RUN rm -rf /tmp/*.zip
 
