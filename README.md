@@ -1,15 +1,12 @@
-RELEASE NOTES:
-==============
+You can use below cmd to gernerate docker images:
+```
+./build.sh <BUILD_VERSION> "YOUR RELEASE NOTES"
+```
 
---------------------
-version: 1.1_1001
-Notes: using Elatic stack 5.0.1 release
+For elasticsearch, I installed below plugins:
+[elasticsearch-cloud-kubernetes](https://github.com/fabric8io/elasticsearch-cloud-kubernetes): Kubernetes Cloud Plugin for Elasticsearch
 
---------------------
-version: 1.1_1002
-Notes: using Elatic stack 5.1.1 release
-\n
---------------------
-version: 1.1_1003
-Notes: using Elatic stack 5.2.2 release
-\n
+[ik](https://github.com/medcl/elasticsearch-analysis-ik): IK Analysis for Elasticsearch
+
+[elasticsearch-prometheus-exporter](https://github.com/vvanholl/elasticsearch-prometheus-exporter): Prometheus Exporter Plugin for ElasticSearch
+
