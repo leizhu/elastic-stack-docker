@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-log
+data:
+  filebeat.yml: |-
+    filebeat:
+      prospectors:
+        -
+          paths:
+            - /var/log/containers/*.log
+          document_type: kube-logs
+          ignore_older: 24h
+          symlinks: true
+          json:
+            keys_under_root: true
+            add_error_key: true
+            message_key: log
+    output:
+      kafka:
+        hosts: 'kafka:9092'
+        topic: '%{[type]}'
+        partition.round_robin:
+          reachable_only: false
+        version: 0.10.0.0
+    logging:
+      level: ${LOG_LEVEL:warning}
+      files:
+        path: /var/log/beat
+        name: filebeat.log
+        keepfiles: 7

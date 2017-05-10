@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: consume-kubelogs
+spec:
+  replicas: 3 
+  selector:
+    component: logstash
+    role: consume-kubelogs
+  template:
+    metadata:
+      labels:
+        component: logstash
+        role: consume-kubelogs
+    spec:
+      containers:
+      - name: consume-kubelogs
+        image: 172.22.111.199:80/cloud/logstash:1.1_1003
+        imagePullPolicy: Always
+        env:
+        - name: KUBERNETES_TRUST_CERT
+          value: "true"
+        command: ["logstash","-e", "input {
+kafka { 
+	topics => [\"kube-logs\"]
+	group_id => \"cloud\"
+	consumer_threads => 2
+	bootstrap_servers => \"kafka:9092\"
+	auto_offset_reset => \"latest\"
+        enable_auto_commit => \"true\"
+        max_poll_records => \"500\"
+      }	 
+}
+filter {
+    json {
+      source => \"message\"
+    }
+    grok {
+        match => { \"source\" => \"/var/log/containers/%{DATA:pod_name}_%{DATA:namespace}_%{GREEDYDATA:container_name}-%{DATA:container_id}.log\" }
+        remove_field => [\"source\", \"offset\", \"input_type\", \"beat\", \"@version\", \"stream\"]
+    }
+}
+output { 
+    elasticsearch { sniffing=>true hosts => [\"elasticsearch\"] index => \"logs-%{+YYYY.MM.dd}\" document_type => \"%{[role]}\" }
+        }"]
