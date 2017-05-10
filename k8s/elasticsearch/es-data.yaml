@@ -15,6 +15,8 @@ spec:
         role: data
         id: es-data-1 
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: 10.17.17.4
       containers:
       - name: es-data-1
         securityContext:
@@ -86,6 +88,8 @@ spec:
         role: data
         id: es-data-2
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: 10.17.17.5
       containers:
       - name: es-data-2
         securityContext:
@@ -157,6 +161,8 @@ spec:
         role: data
         id: es-data-3
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: 10.17.17.6
       containers:
       - name: es-data-3
         securityContext:
